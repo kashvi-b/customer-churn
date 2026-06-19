@@ -27,3 +27,11 @@ models/*.joblib
 
 # Logs
 *.log
+venv/
+.DS_Store
+.ipynb_checkpoints/
+mlruns/
+mlflow.db
+archive.zip
+files.zip
+__pycache__/
