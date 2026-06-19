@@ -4,6 +4,8 @@
 # pip install streamlit plotly shap joblib pandas
 # Run with: streamlit run src/dashboard.py
 
+
+from explainability.shap_utils import get_top_features
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -100,12 +102,50 @@ with col_b:
 # ── SHAP feature importance ────────────────────────────────
 # ── Feature Importance ────────────────────────────────
 st.markdown("---")
-st.subheader("🔍 Feature Importance")
 
-st.info(
-    "Feature importance visualization is disabled in the cloud deployment version."
+st.subheader("🔍 Top Churn Drivers")
+
+top_features = get_top_features(
+
+    model,
+
+    X_test
+
 )
 
+st.dataframe(
+
+    top_features.head(10),
+
+    use_container_width=True
+
+)
+
+fig = px.bar(
+
+    top_features.head(10),
+
+    x="Importance",
+
+    y="Feature",
+
+    orientation="h"
+
+)
+
+fig.update_layout(
+
+    height=500
+
+)
+
+st.plotly_chart(
+
+    fig,
+
+    use_container_width=True
+
+)
 # ── High-risk customer table ───────────────────────────────
 st.markdown("---")
 st.subheader("🔴 Top high-risk customers")

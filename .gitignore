@@ -16,7 +16,7 @@ mlruns/
 mlflow.db
 
 # Models
-models/*.pkl
+#models/*.pkl
 models/*.joblib
 
 # Mac
