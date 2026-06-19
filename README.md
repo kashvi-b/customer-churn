@@ -6,6 +6,19 @@
 [![MLflow](https://img.shields.io/badge/MLflow-tracking-orange)](https://mlflow.org)
 
 ---
+## Dashboard Preview
+
+### Dashboard Overview
+
+![Dashboard](screenshots/dashboard_overview.png)
+
+### SHAP Explainability
+
+![SHAP](screenshots/shap_analysis.png)
+
+### High Risk Customers
+
+![High Risk](screenshots/high_risk_customers.png)
 
 ## Project Summary
 
