@@ -5,7 +5,6 @@
 # Run with: streamlit run src/dashboard.py
 
 
-from explainability.shap_utils import get_top_features
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,6 +12,19 @@ import plotly.graph_objects as go
 import plotly.express as px
 import joblib
 import shap
+import sys
+import os
+
+project_root = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
+from explainability.shap_utils import get_top_features
 
 # ── Page config ───────────────────────────────────────────
 st.set_page_config(
@@ -173,7 +185,7 @@ def colour_risk(val):
 st.dataframe(
     top_risk.style
         .format({'churn_probability': '{:.2%}'})
-        .applymap(colour_risk, subset=['risk_tier']),
+        .map(colour_risk, subset=['risk_tier']),
     use_container_width=True
 )
 
