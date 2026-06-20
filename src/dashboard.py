@@ -32,7 +32,7 @@ st.set_page_config(
     page_icon="📉",
     layout="wide"
 )
-
+from analytics.business_metrics import calculate_business_impact
 st.title("📉 Telco Customer Churn Risk Dashboard")
 st.caption("Powered by XGBoost + SHAP — IBM Telco Dataset")
 
@@ -80,6 +80,25 @@ def load_test_data():
 model      = load_model()
 X_test, y_test = load_test_data()
 y_proba    = model.predict_proba(X_test)[:, 1]
+results = X_test.copy()
+
+results['churn_probability'] = y_proba
+
+results['actual_churn'] = y_test.values
+
+results['risk_tier'] = pd.cut(
+    y_proba,
+    bins=[0, 0.4, 0.7, 1.0],
+    labels=['Low', 'Medium', 'High']
+)
+
+
+results["recommendation"] = (
+    results.apply(
+        retention_recommendation,
+        axis=1
+    )
+)
 
 # ── Sidebar: threshold slider ──────────────────────────────
 st.sidebar.header("⚙️ Settings")
@@ -104,6 +123,40 @@ col2.metric("F1 Score",        f"{f1:.3f}",        f"threshold={threshold}")
 col3.metric("Customers flagged", f"{flagged}",      f"of {len(y_pred)} total")
 col4.metric("High-risk (≥70%)", f"{high_risk}",    "immediate action")
 
+impact = calculate_business_impact(
+
+    results
+
+)
+
+st.subheader(
+
+    "💰 Business Impact"
+
+)
+
+b1,b2,b3 = st.columns(3)
+
+b1.metric(
+
+    "Total Customers",
+
+    impact["total_customers"]
+
+)
+
+b2.metric(
+
+    "High Risk Customers",
+
+    impact["high_risk_customers"]
+
+)
+
+b3.metric(
+    "High-Risk Rate",
+    f"{impact['high_risk_customers']/impact['total_customers']:.1%}"
+)
 st.markdown("---")
 
 # ── Score distribution ─────────────────────────────────────
@@ -193,58 +246,43 @@ st.markdown("---")
 st.subheader("🔴 Top high-risk customers")
 
 top_n = st.slider("Show top N customers", 5, 50, 20)
-results = X_test.copy()
-results['churn_probability'] = y_proba
-results['actual_churn']      = y_test.values
-results['risk_tier']         = pd.cut(
-    y_proba, bins=[0, 0.4, 0.7, 1.0],
-    labels=['Low', 'Medium', 'High']
-)
-results["recommendation"] = (
 
-    results.apply(
+top_risk = (
 
-        retention_recommendation,
+    results
 
-        axis=1
+    .query("risk_tier == 'High'")
+
+    .sort_values(
+
+        "churn_probability",
+
+        ascending=False
 
     )
 
-)
-top_risk = (
-results
+    .head(top_n)
 
-.sort_values(
+    [[
 
-'churn_probability',
+    "tenure",
 
-ascending=False
+    "MonthlyCharges",
 
-)
+    "is_monthly",
 
-.head(top_n)
+    "no_support",
 
-[[
+    "service_count",
 
-'tenure',
+    "churn_probability",
 
-'MonthlyCharges',
+    "risk_tier",
 
-'is_monthly',
+    "recommendation"
 
-'no_support',
+    ]]
 
-'service_count',
-
-'churn_probability',
-
-'risk_tier',
-
-'actual_churn',
-
-'recommendation'
-
-]]
 )
 
 def colour_risk(val):
@@ -252,10 +290,25 @@ def colour_risk(val):
     if val == 'Medium': return 'background-color: #fff5cc'
     return ''
 
+display_cols = [
+    "tenure",
+    "churn_probability",
+    "risk_tier",
+    "recommendation"
+]
+
+display_df = top_risk[display_cols].copy()
+
+display_df["churn_probability"] = (
+    display_df["churn_probability"] * 100
+).round(1)
+
+display_df["churn_probability"] = (
+    display_df["churn_probability"].astype(str) + "%"
+)
+
 st.dataframe(
-    top_risk.style
-        .format({'churn_probability': '{:.2%}'})
-        .map(colour_risk, subset=['risk_tier']),
+    display_df,
     use_container_width=True
 )
 
@@ -275,3 +328,9 @@ c3.metric("Actual",     "Churned 🔴" if actual == 1 else "Retained 🟢")
 
 with st.expander("Show all features for this customer"):
     st.dataframe(cust.to_frame().T, use_container_width=True)
+
+st.markdown("---")
+
+st.caption(
+    "Built by Kashvi Bhardwaj | XGBoost | Streamlit | SHAP | IBM Telco Dataset"
+)
