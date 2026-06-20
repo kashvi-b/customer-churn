@@ -1,12 +1,38 @@
-# Customer Churn Prediction
-## IBM Telco Dataset | XGBoost + SHAP + FastAPI + Streamlit
+# 📉 Telco Customer Churn Intelligence Dashboard
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue)](https://python.org)
-[![XGBoost](https://img.shields.io/badge/XGBoost-1.7+-green)](https://xgboost.readthedocs.io)
-[![MLflow](https://img.shields.io/badge/MLflow-tracking-orange)](https://mlflow.org)
+### End-to-End Customer Churn Prediction using XGBoost, SHAP, Streamlit & FastAPI
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue)
+![XGBoost](https://img.shields.io/badge/XGBoost-ML-green)
+![SHAP](https://img.shields.io/badge/SHAP-Explainable%20AI-orange)
+![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)
+![MLflow](https://img.shields.io/badge/MLflow-Experiment%20Tracking-blue)
 
 ---
-## Dashboard Preview
+
+## 📌 Project Overview
+
+An end-to-end machine learning project built using the IBM Telco Customer Churn dataset to identify customers who are likely to churn and provide actionable retention strategies.
+
+This project combines machine learning, explainable AI, business intelligence, and interactive visualizations to help businesses proactively reduce customer attrition.
+
+---
+
+## 🚀 Features
+
+- 📊 Interactive Streamlit dashboard
+- 🔍 SHAP explainability
+- 📈 Churn probability distribution
+- 🎯 Risk tier segmentation
+- 🔴 High-risk customer identification
+- 💡 Retention recommendation engine
+- 💰 Business impact analysis
+- 🧪 Individual customer explorer
+- ⚡ FastAPI prediction endpoint
+
+---
+
+## 🖥️ Dashboard Preview
 
 ### Dashboard Overview
 
@@ -20,92 +46,123 @@
 
 ![High Risk](screenshots/high_risk_customers.png)
 
-## Project Summary
+---
 
-End-to-end churn prediction pipeline for a telecom company using the IBM Telco dataset.
-Achieved **0.87 AUC-ROC** with XGBoost. Includes full SHAP explainability,
-a Streamlit business dashboard, and a FastAPI serving endpoint.
+## 📊 Model Performance
 
-## Results
-
-| Model             | CV AUC | Test AUC | PR AUC | F1    |
-|-------------------|--------|----------|--------|-------|
-| LogisticRegression| 0.836  | 0.841    | 0.631  | 0.597 |
-| RandomForest      | 0.861  | 0.858    | 0.672  | 0.618 |
-| GradientBoosting  | 0.867  | 0.863    | 0.681  | 0.625 |
-| LightGBM          | 0.873  | 0.869    | 0.693  | 0.631 |
-| **XGBoost**       | **0.878** | **0.874** | **0.702** | **0.643** |
+| Model | Test AUC | F1 Score |
+|-------|----------|----------|
+| Logistic Regression | 0.841 | 0.597 |
+| Random Forest | 0.858 | 0.618 |
+| Gradient Boosting | 0.863 | 0.625 |
+| LightGBM | 0.869 | 0.631 |
+| **XGBoost** | **0.874** | **0.643** |
 
 ---
 
-## Project Structure
+## 🎯 Dashboard Modules
 
-```
-churn_project/
-├── data/                   # Raw + processed data (not committed)
-├── models/                 # Saved model & scaler
-├── notebooks/
-│   ├── 01_eda.py           # Exploratory data analysis
-│   ├── 02_feature_engineering.py
-│   ├── 03_model_training.py  # MLflow experiment tracking
-│   └── 04_evaluation_shap.py # SHAP explainability
-├── reports/                # Saved plots & HTML reports
+| Module | Description |
+|--------|-------------|
+| 📊 KPI Metrics | AUC, F1 Score, Customer Risk Summary |
+| 💰 Business Impact | Customer base and risk analysis |
+| 📈 Churn Distribution | Probability distribution charts |
+| 🔍 SHAP Analysis | Top churn drivers |
+| 🔴 High-Risk Customers | Prioritized customer list |
+| 💡 Recommendations | Suggested retention actions |
+| 🧪 Customer Explorer | Individual customer analysis |
+
+---
+
+## 📂 Project Structure
+
+```text
+customer-churn/
+
+├── analytics/
+├── data/
+├── explainability/
+├── models/
+├── recommendations/
+├── reports/
+├── screenshots/
 ├── src/
-│   ├── api.py              # FastAPI serving endpoint
-│   └── dashboard.py        # Streamlit business dashboard
+│   ├── api.py
+│   └── dashboard.py
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## Quickstart
+## ⚙️ Installation
+
+### Clone the repository
 
 ```bash
-# 1. Clone and install
-git clone https://github.com/yourname/telco-churn-prediction
-cd telco-churn-prediction
+git clone https://github.com/kashvi-b/customer-churn.git
+
+cd customer-churn
+```
+
+### Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-# 2. Download dataset
-# → https://www.kaggle.com/datasets/blastchar/telco-customer-churn
-# → Place CSV in /data/
+### Run the dashboard
 
-# 3. Run notebooks in order
-python notebooks/01_eda.py
-python notebooks/02_feature_engineering.py
-python notebooks/03_model_training.py
-python notebooks/04_evaluation_shap.py
-
-# 4. Launch dashboard
+```bash
 streamlit run src/dashboard.py
+```
 
-# 5. Launch API
+### Run the API
+
+```bash
 uvicorn src.api:app --reload
-# → API docs at http://localhost:8000/docs
+```
+
+Open API documentation:
+
+```text
+http://localhost:8000/docs
 ```
 
 ---
 
-## Key Technical Highlights
+## 🛠️ Tech Stack
 
-- **Class imbalance**: Handled via SMOTE (26.5% → 50% balanced)
-- **Feature engineering**: RFM-inspired features, service bundles, contract risk flags
-- **Explainability**: SHAP TreeExplainer with global + per-customer force plots
-- **Experiment tracking**: MLflow with parameter logging and model registry
-- **Threshold tuning**: Threshold set at 0.40 (prioritising recall over precision)
-- **Deployment**: FastAPI with Pydantic validation + batch scoring endpoint
-- **Dashboard**: Streamlit with Plotly charts, SHAP bar chart, risk tier breakdown
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- XGBoost
+- SHAP
+- Streamlit
+- Plotly
+- FastAPI
+- MLflow
+- Joblib
 
 ---
 
-## Business Impact Framing
+## 💼 Business Impact
 
-> Targeting the top 20% of highest-scored customers captures **~65% of all actual churners**,
-> allowing the retention team to prioritise outreach efficiently rather than contacting all 7,000 customers.
+Instead of contacting every customer, this system helps prioritize outreach efforts by identifying high-risk customers and recommending targeted retention actions.
 
-| Risk Tier | Score Range | Customers | Recommended Action              |
-|-----------|-------------|-----------|----------------------------------|
-| 🔴 HIGH   | ≥ 70%       | ~180      | Immediate call + retention offer |
-| 🟡 MEDIUM | 40–70%      | ~520      | Automated email campaign         |
-| 🟢 LOW    | < 40%       | ~706      | No action needed                 |
+### Risk Segmentation
+
+| Risk Tier | Probability | Action |
+|-----------|-------------|--------|
+| 🔴 High | ≥ 70% | Immediate retention offer |
+| 🟡 Medium | 40% - 70% | Targeted follow-up |
+| 🟢 Low | < 40% | Regular monitoring |
+
+---
+
+## 👩‍💻 Author
+
+**Kashvi Bhardwaj**
+
+Built as an end-to-end machine learning portfolio project showcasing predictive analytics, explainable AI, and business intelligence.
