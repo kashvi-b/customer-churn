@@ -25,7 +25,7 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 
 from explainability.shap_utils import get_top_features
-
+from recommendations.retention_engine import retention_recommendation
 # ── Page config ───────────────────────────────────────────
 st.set_page_config(
     page_title="Churn Risk Dashboard",
@@ -37,14 +37,44 @@ st.title("📉 Telco Customer Churn Risk Dashboard")
 st.caption("Powered by XGBoost + SHAP — IBM Telco Dataset")
 
 # ── Load model & data ──────────────────────────────────────
+import os
+
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
 @st.cache_resource
 def load_model():
-    return joblib.load('models/best_model.pkl')
+
+    model_path = os.path.join(
+        BASE_DIR,
+        "models",
+        "best_model.pkl"
+    )
+
+    return joblib.load(model_path)
 
 @st.cache_data
 def load_test_data():
-    X = pd.read_csv('data/X_test.csv')
-    y = pd.read_csv('data/y_test.csv').squeeze()
+
+    x_path = os.path.join(
+        BASE_DIR,
+        "data",
+        "X_test.csv"
+    )
+
+    y_path = os.path.join(
+        BASE_DIR,
+        "data",
+        "y_test.csv"
+    )
+
+    X = pd.read_csv(x_path)
+
+    y = pd.read_csv(y_path).squeeze()
+
     return X, y
 
 model      = load_model()
@@ -170,12 +200,52 @@ results['risk_tier']         = pd.cut(
     y_proba, bins=[0, 0.4, 0.7, 1.0],
     labels=['Low', 'Medium', 'High']
 )
+results["recommendation"] = (
 
-top_risk = (results
-            .sort_values('churn_probability', ascending=False)
-            .head(top_n)[['tenure', 'MonthlyCharges', 'is_monthly',
-                           'no_support', 'service_count',
-                           'churn_probability', 'risk_tier', 'actual_churn']])
+    results.apply(
+
+        retention_recommendation,
+
+        axis=1
+
+    )
+
+)
+top_risk = (
+results
+
+.sort_values(
+
+'churn_probability',
+
+ascending=False
+
+)
+
+.head(top_n)
+
+[[
+
+'tenure',
+
+'MonthlyCharges',
+
+'is_monthly',
+
+'no_support',
+
+'service_count',
+
+'churn_probability',
+
+'risk_tier',
+
+'actual_churn',
+
+'recommendation'
+
+]]
+)
 
 def colour_risk(val):
     if val == 'High':   return 'background-color: #ffe0e0'
