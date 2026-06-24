@@ -6,29 +6,31 @@
 ![XGBoost](https://img.shields.io/badge/XGBoost-ML-green)
 ![SHAP](https://img.shields.io/badge/SHAP-Explainable%20AI-orange)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)
-![MLflow](https://img.shields.io/badge/MLflow-Experiment%20Tracking-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
 
 ---
 
 ## 📌 Project Overview
 
-An end-to-end machine learning project built using the IBM Telco Customer Churn dataset to identify customers who are likely to churn and provide actionable retention strategies.
+An end-to-end Machine Learning project built using the IBM Telco Customer Churn dataset to identify customers who are likely to churn and provide actionable retention strategies.
 
-This project combines machine learning, explainable AI, business intelligence, and interactive visualizations to help businesses proactively reduce customer attrition.
+This project combines Machine Learning, Explainable AI, Business Intelligence, and Interactive Visualizations to help businesses proactively reduce customer attrition and prioritize retention efforts.
 
 ---
 
 ## 🚀 Features
 
-- 📊 Interactive Streamlit dashboard
-- 🔍 SHAP explainability
-- 📈 Churn probability distribution
-- 🎯 Risk tier segmentation
-- 🔴 High-risk customer identification
-- 💡 Retention recommendation engine
-- 💰 Business impact analysis
-- 🧪 Individual customer explorer
-- ⚡ FastAPI prediction endpoint
+- 📊 Interactive Streamlit Dashboard
+- 🔍 SHAP Explainability Analysis
+- 📈 Churn Probability Distribution
+- 🎯 Risk Tier Segmentation
+- 🔴 High-Risk Customer Identification
+- 💡 Retention Recommendation Engine
+- 💰 Business Impact Analysis
+- 🔎 Interactive Filters
+- 🧪 Individual Customer Explorer
+- 📥 Download High-Risk Customers CSV
+- ⚡ FastAPI Prediction Endpoint
 
 ---
 
@@ -42,7 +44,7 @@ This project combines machine learning, explainable AI, business intelligence, a
 
 ![SHAP](screenshots/shap_analysis.png)
 
-### High Risk Customers
+### High-Risk Customers
 
 ![High Risk](screenshots/high_risk_customers.png)
 
@@ -64,13 +66,48 @@ This project combines machine learning, explainable AI, business intelligence, a
 
 | Module | Description |
 |--------|-------------|
-| 📊 KPI Metrics | AUC, F1 Score, Customer Risk Summary |
-| 💰 Business Impact | Customer base and risk analysis |
-| 📈 Churn Distribution | Probability distribution charts |
+| 📊 KPI Metrics | AUC, F1 Score and Customer Risk Summary |
+| 💰 Business Impact | Business-oriented churn insights |
+| 📈 Churn Distribution | Interactive probability charts |
 | 🔍 SHAP Analysis | Top churn drivers |
 | 🔴 High-Risk Customers | Prioritized customer list |
 | 💡 Recommendations | Suggested retention actions |
+| 🔎 Interactive Filters | Filter customers dynamically |
 | 🧪 Customer Explorer | Individual customer analysis |
+| 📥 CSV Download | Export high-risk customers |
+
+---
+
+## 🔎 Interactive Filters
+
+The dashboard supports real-time filtering by:
+
+- Senior Citizen
+- Contract Type
+- Internet Service
+- Payment Method
+
+These filters dynamically update:
+
+- KPI Cards
+- Business Impact Metrics
+- Risk Distribution
+- High-Risk Customer Table
+- Individual Customer Explorer
+
+---
+
+## 💼 Business Impact
+
+Instead of contacting every customer, this system helps businesses prioritize outreach efforts by identifying high-risk customers and recommending targeted retention actions.
+
+### Risk Segmentation
+
+| Risk Tier | Probability | Action |
+|-----------|-------------|--------|
+| 🔴 High | ≥ 70% | Immediate retention offer |
+| 🟡 Medium | 40% - 70% | Targeted follow-up |
+| 🟢 Low | < 40% | Regular monitoring |
 
 ---
 
@@ -123,7 +160,7 @@ streamlit run src/dashboard.py
 uvicorn src.api:app --reload
 ```
 
-Open API documentation:
+API Documentation:
 
 ```text
 http://localhost:8000/docs
@@ -142,22 +179,7 @@ http://localhost:8000/docs
 - Streamlit
 - Plotly
 - FastAPI
-- MLflow
 - Joblib
-
----
-
-## 💼 Business Impact
-
-Instead of contacting every customer, this system helps prioritize outreach efforts by identifying high-risk customers and recommending targeted retention actions.
-
-### Risk Segmentation
-
-| Risk Tier | Probability | Action |
-|-----------|-------------|--------|
-| 🔴 High | ≥ 70% | Immediate retention offer |
-| 🟡 Medium | 40% - 70% | Targeted follow-up |
-| 🟢 Low | < 40% | Regular monitoring |
 
 ---
 
@@ -165,4 +187,4 @@ Instead of contacting every customer, this system helps prioritize outreach effo
 
 **Kashvi Bhardwaj**
 
-Built as an end-to-end machine learning portfolio project showcasing predictive analytics, explainable AI, and business intelligence.
+Built as an end-to-end Customer Churn Intelligence system that combines Machine Learning, Explainable AI, and Business Analytics to drive customer retention decisions.
