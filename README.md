@@ -17,6 +17,7 @@ An end-to-end Machine Learning project built using the IBM Telco Customer Churn 
 This project combines Machine Learning, Explainable AI, Business Intelligence, and Interactive Visualizations to help businesses proactively reduce customer attrition and prioritize retention efforts.
 
 ---
+🚀 Live App: https://customer-churn-prediction-kb.streamlit.app/
 
 ## 🚀 Features
 
