@@ -4,56 +4,29 @@ import numpy as np
 
 
 def get_shap_values(model, X):
-    """
-    Compute SHAP values.
 
-    Parameters
-    ----------
-    model : trained model
-    X : pandas DataFrame
+    explainer = shap.TreeExplainer(model)
 
-    Returns
-    -------
-    shap_values
-    """
-
-    try:
-
-        explainer = shap.TreeExplainer(model)
-
-        shap_values = explainer.shap_values(X)
-
-    except Exception:
-
-        explainer = shap.Explainer(model)
-
-        shap_values = explainer(X)
+    shap_values = explainer.shap_values(X)
 
     return shap_values
 
 
 def get_top_features(model, X):
-    """
-    Return top features sorted by importance.
-    """
 
-    shap_values = get_shap_values(model, X)
-
-    # New SHAP versions
-    if hasattr(shap_values, "values"):
-
-        values = shap_values.values
-
-    else:
-
-        values = shap_values
+    shap_values = get_shap_values(
+        model,
+        X
+    )
 
     # Handle binary classification
-    if len(values.shape) == 3:
+    if len(np.array(shap_values).shape) == 3:
 
-        values = values[:, :, 1]
+        shap_values = shap_values[:, :, 1]
 
-    mean_abs = np.abs(values).mean(axis=0)
+    mean_abs = np.abs(
+        shap_values
+    ).mean(axis=0)
 
     importance = pd.DataFrame({
 
@@ -79,28 +52,17 @@ def get_customer_explanation(
     X,
     customer_index
 ):
-    """
-    Explain one customer.
-    """
 
     shap_values = get_shap_values(
         model,
         X
     )
 
-    if hasattr(shap_values, "values"):
+    if len(np.array(shap_values).shape) == 3:
 
-        values = shap_values.values
+        shap_values = shap_values[:, :, 1]
 
-    else:
-
-        values = shap_values
-
-    if len(values.shape) == 3:
-
-        values = values[:, :, 1]
-
-    customer_shap = values[customer_index]
+    customer_shap = shap_values[customer_index]
 
     explanation = pd.DataFrame({
 
