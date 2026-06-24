@@ -495,19 +495,21 @@ st.markdown("---")
 
 st.subheader("🔍 Top Churn Drivers")
 
-top_features = get_top_features(
-    model,
-    filtered_df.drop(
-        columns=[
-            "churn_probability",
-            "actual_churn",
-            "risk_tier",
-            "recommendation"
-        ],
-        errors="ignore"
-    )
-)
+importance = pd.DataFrame({
 
+    "Feature": X_test.columns,
+
+    "Importance": model.feature_importances_
+
+})
+
+top_features = importance.sort_values(
+
+    "Importance",
+
+    ascending=False
+
+)
 st.dataframe(
 
     top_features.head(10),
