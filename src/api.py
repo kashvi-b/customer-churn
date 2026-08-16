@@ -20,9 +20,10 @@ app = FastAPI(
 )
 
 # ── Load model and scaler on startup ──────────────────────
-MODEL_PATH  = os.path.join(os.path.dirname(__file__), 'models/best_model.pkl')
-SCALER_PATH = os.path.join(os.path.dirname(__file__), 'models/scaler.pkl')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+MODEL_PATH = os.path.join(BASE_DIR, "models", "best_model.pkl")
+SCALER_PATH = os.path.join(BASE_DIR, "models", "scaler.pkl")
 model  = joblib.load(MODEL_PATH)
 scaler = joblib.load(SCALER_PATH)
 
